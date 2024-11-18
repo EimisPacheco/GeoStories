@@ -14,12 +14,14 @@
       }
     }
     </script>
-    <script>
-    (g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})({
-      key: "AIzaSyB731okswM5y4CT1onlh6D8_K_WSPTDDLI",
-      v: "alpha",
-    });
-    </script>
+
+<script>
+(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})({
+  key: "AIzaSyB731okswM5y4CT1onlh6D8_K_WSPTDDLI",
+  v: "alpha",
+  libraries: "places"
+});
+</script>
 <style>
     body {
         font-family: 'Roboto', sans-serif;
@@ -160,23 +162,41 @@
     .place-details strong {
         color: #0066cc;
     }
-    button {
-        background-color: #4CAF50;
-        border: none;
-        color: white;
-        padding: 10px 20px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 16px;
-        margin: 4px 2px;
-        cursor: pointer;
-        border-radius: 4px;
-        transition: background-color 0.3s;
+    button, .close-btn {
+      background-color: #4CAF50; /* Green background */
+      border: none;
+      color: white; /* White text */
+      padding: 10px 20px; /* Button padding */
+      font-size: 16px;
+      border-radius: 4px; /* Rounded corners */
+      cursor: pointer;
+      transition: background-color 0.3s; /* Smooth hover transition */
     }
+
+    table th:first-child,
+    table td:first-child {
+    max-width: 300px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
     button:hover {
         background-color: #45a049;
     }
+    .close-btn {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.close-btn:hover {
+    background-color: #45a049;
+}
     select, input[type="number"] {
         padding: 8px;
         margin: 4px;
@@ -229,9 +249,149 @@
     #minDuration {
         width: 60px;
     }
+    table th {
+    position: relative;
+}
+
+table th:first-child::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 5px;
+    background: #ccc;
+    cursor: col-resize;
+}
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+#closeModal {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#closeModal:hover {
+    background-color: #45a049;
+}
+.ai-recommendations {
+    margin-top: 15px;
+}
+
+.ai-recommendations table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.ai-recommendations td {
+    padding: 5px;
+    vertical-align: middle;
+}
+
+.ai-recommendations button {
+    padding: 5px 10px;
+    font-size: 12px;
+}
+.place-details button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.place-details button:hover {
+    background-color: #45a049;
+}
+.place-name {
+    font-size: 14px;
+    color: #0066cc;
+}
+
+.place-description {
+    font-size: 12px;
+}
+#recommendationBtn {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#recommendationBtn:hover {
+    background-color: #45a049;
+}
+
+.recommendation-popup {
+    width: 80%;
+    max-width: 600px;
+}
+
+.recommendation-content {
+    text-align: left;
+}
+
+.close-btn {
+    margin-top: 20px;
+    padding: 5px 10px;
+    background-color: #f44336;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.close-btn:hover {
+    background-color: #d32f2f;
+}
+
+
 </style>
 </head>
 <body>
+  <div id="welcomeModal" class="modal">
+      <div class="modal-content">
+          <h2 class="app-title"> 🗺️  Welcome to GeoStories!</h2>
+          <a href="https://www.howtogeek.com/725241/how-to-download-your-google-maps-data/"> How to download your personal Google Maps Data</a>
+          <br/>
+          <br/>
+          <a href="https://myaccount.google.com/yourdata/maps?hl=en/"> Download your Personal Google Maps Data</a>
+          <br/>
+          <br/>
+           Click on a row in the table to navigate to the place and see more information and recommendations about where you have been. ✈️ You will fly there.
+          <br/>
+          <br/>
+          <button id="closeModal">Got it!</button>
+      </div>
+  </div>
     <div class="toolbar">
         <select id="yearFilter">
             <option value="all">All Years</option>
@@ -239,7 +399,7 @@
         </select>
         <button id="btnImport">Import Data...</button>
         <input type="file" id="folderInput" style="display: none" webkitdirectory directory multiple />
-        <label for="minDuration">Filter by Minimum Duration (minutes):</label>
+        <label for="minDuration">Minimum Duration (minutes):</label>
         <input type="number" id="minDuration" value="10" min="10">
         <button id="btnApplyFilter">Apply Filter</button>
         <label class="switch">
@@ -252,7 +412,9 @@
             <span class="slider"></span>
         </label>
         <span class="toggle-label">Polygon</span>
+        <button id="recommendationBtn">Get Travel Recommendations</button>
         <span class="app-title"> 🗺️  GeoStories</span>
+
     </div>
 
     <div class="content">
@@ -287,12 +449,14 @@
 
     <div id="placeDetailsPopup">
         <div id="placeDetailsContent"></div>
-        <button onclick="closePlaceDetailsPopup()">Close</button>
+        <button onclick="closePlaceDetailsPopup()" class="close-btn">Close</button>
     </div>
 
     <script type="module">
         let labelsEnabled = true;
         let polygonEnabled = true;
+        let visitedAddresses = new Set();
+        let visitedAddressesArray = [];
         import { GoogleGenerativeAI } from "@google/generative-ai";
 
         // Fetch your API_KEY
@@ -324,7 +488,7 @@
             flyingCamera = new Map3DElement({
                 center: { lat: 0, lng: 0, altitude: 0 },
                 tilt: 67.5,
-                range: 1000,
+                range: 10000,
                 defaultLabelsDisabled: !labelsEnabled
             });
 
@@ -402,7 +566,7 @@
                 flyingCamera.flyCameraAround({
                     camera: flyToCamera,
                     durationMillis: 100000,
-                                        rounds: 3
+                    rounds: 3
                 });
             }, { once: true });
         }
@@ -534,27 +698,53 @@
             return filteredData;
         }
 
-        function populateTable(data) {
-            $("#locationTable").empty();
-            const sortedData = Array.from(data.entries()).sort((a, b) => b[1].lastVisit - a[1].lastVisit);
-            sortedData.forEach(([normalizedAddress, addr]) => {
-                let row = $("<tr>");
-                row.append($("<td>").text(addr.address));
-                row.append($("<td>").text(addr.country));
-                row.append($("<td>").text(addr.city));
-                row.append($("<td>").text(addr.repeatCount));
-                row.append($("<td>").text(Array.from(addr.years).sort((a, b) => b - a).join(', '))); // Sort years descending
-                row.append($("<td>").text(addr.longitude));
-                row.append($("<td>").text(addr.latitude));
-                row.append($("<td>").html('<input type="checkbox" class="selected">'));
-                row.on('click', () => {
-                    flyToLocation(addr.latitude, addr.longitude);
-                    showPlaceDetails(addr);
-                });
-                $("#locationTable").append(row);
-            });
-        }
 
+      function isValidAddress(address) {
+          // Split the address into components
+          const components = address.split(',').map(comp => comp.trim());
+          
+          // Check if we have at least 4 components (street, city, state+zip, country)
+          if (components.length < 4) return false;
+          
+          // Check if the last component is a country
+          if (components[components.length - 1] !== "USA") return false;
+          
+          // Check if the second-to-last component has both state and zip
+          const stateZip = components[components.length - 2].split(' ');
+          if (stateZip.length !== 2 || stateZip[1].length !== 5) return false;
+          
+          return true;
+      }
+
+
+        function populateTable(data) {
+          $("#locationTable").empty();
+          visitedAddresses.clear();
+          const sortedData = Array.from(data.entries()).sort((a, b) => b[1].lastVisit - a[1].lastVisit);
+          
+          sortedData.forEach(([normalizedAddress, addr]) => {
+              if (isValidAddress(addr.address) && !visitedAddresses.has(addr.address)) {
+                  visitedAddresses.add(addr.address);
+                  
+                  let row = $("<tr>");
+                  row.append($("<td>").text(addr.address).attr('title', addr.address));
+                  row.append($("<td>").text(addr.country));
+                  row.append($("<td>").text(addr.city));
+                  row.append($("<td>").text(addr.repeatCount));
+                  row.append($("<td>").text(Array.from(addr.years).sort((a, b) => b - a).join(', ')));
+                  row.append($("<td>").text(addr.longitude));
+                  row.append($("<td>").text(addr.latitude));
+                  row.append($("<td>").html('<input type="checkbox" class="selected">'));
+                  row.on('click', () => {
+                      flyToLocation(addr.latitude, addr.longitude);
+                      showPlaceDetails(addr);
+                  });
+                  $("#locationTable").append(row);
+              }
+          });
+      }
+
+        
         function updateMap(data = addressData) {
             customElements.whenDefined(polyline3d.localName).then(async () => {
                 const { Marker3DElement } = await google.maps.importLibrary("maps3d");
@@ -666,56 +856,209 @@
             rows.forEach(row => $("#locationTable").append(row));
         }
 
-        async function showPlaceDetails(addr) {
-            const container = document.getElementById("placeDetailsContent");
-            container.innerHTML = "";
 
-            const placeBox = document.createElement("div");
-            placeBox.classList.add("place-details");
+async function showPlaceDetails(addr) {
+    const container = document.getElementById("placeDetailsContent");
+    container.innerHTML = "";
 
-            const arrivalTime = moment(addr.startTimestamp).format('MMMM Do YYYY, h:mm:ss a');
-            const placeDetails = `
-                <p><strong>Address:</strong> ${addr.address}</p>
-                <p><strong>Country:</strong> ${addr.country}</p>
-                <p><strong>City:</strong> ${addr.city}</p>
-                <p><strong>Repeat Count:</strong> ${addr.repeatCount}</p>
-                <p><strong>Years Visited:</strong> ${Array.from(addr.years).sort((a, b) => b - a).join(', ')}</p>
-                <p><strong>Coordinates:</strong><br>${addr.latitude}, ${addr.longitude}</p>
-                <p><strong>Last Arrival:</strong><br>${arrivalTime}</p>
+    const placeBox = document.createElement("div");
+    placeBox.classList.add("place-details");
+
+    const arrivalTime = moment(addr.startTimestamp).format('MMMM Do YYYY, h:mm:ss a');
+    const placeDetails = `
+        <p><strong>Address:</strong> ${addr.address}</p>
+        <p><strong>Country:</strong> ${addr.country}</p>
+        <p><strong>City:</strong> ${addr.city}</p>
+        <p><strong>Repeat Count:</strong> ${addr.repeatCount}</p>
+        <p><strong>Years Visited:</strong> ${Array.from(addr.years).sort((a, b) => b - a).join(', ')}</p>
+        <p><strong>Coordinates:</strong> ${addr.latitude}, ${addr.longitude}</p>
+        <p><strong>Last Arrival:</strong> ${arrivalTime}</p>
+    `;
+
+    placeBox.innerHTML = placeDetails;
+    container.appendChild(placeBox);
+
+    document.getElementById("placeDetailsPopup").style.display = "block"; 
+
+      const promptFacts = `Based on the following information about a place, provide a brief, creative and fun recommendation or interesting fact, Keep it concise, around 
+          100 words. Return your answer in HTML format with appropriate tags (do not use H1, or other title tags, only use bold), but do not include 
+          the \`\`\`html and \`\`\` tags. 
+          Name: ${addr.address}
+          Country: ${addr.country}
+          City: ${addr.city}
+          Repeat Count: ${addr.repeatCount}
+          Years Visited: ${Array.from(addr.years).sort((a, b) => b - a).join(', ')}
+          Coordinates: ${addr.latitude}, ${addr.longitude}
+          Last Arrival Time: ${arrivalTime}`;
+
+    const promptPlaces = `Based on the following information about a place, list 10 nearby nice places to visit that are NOT in this list: ${visitedAddressesArray.join(', ')}. ALWAYS use this format for each 
+    suggestion: index number + place name: Place description. It must be a very brief description of this place.
+          Name: ${addr.address}
+          Country: ${addr.country}
+          City: ${addr.city}
+          Repeat Count: ${addr.repeatCount}
+          Years Visited: ${Array.from(addr.years).sort((a, b) => b - a).join(', ')}
+          Coordinates: ${addr.latitude}, ${addr.longitude}
+          Last Arrival Time: ${arrivalTime}
+          please do not include any extra comment or question`;
+
+    try {
+        // Always fetch and display aiResponseFacts
+        const resultFacts = await model.generateContent(promptFacts);
+        const aiResponseFacts = resultFacts.response.text();
+
+        // Create and append aiResponseDiv
+        const aiResponseDiv = document.createElement('div');
+        aiResponseDiv.innerHTML = `<p>${aiResponseFacts}</p>`;
+        aiResponseDiv.style.marginBottom = '15px';
+        placeBox.appendChild(aiResponseDiv);
+
+        // Fetch aiResponsePlaces
+        const resultPlaces = await model.generateContent(promptPlaces);
+        const aiResponsePlaces = resultPlaces.response.text();
+
+        //console.log("aiResponsePlaces from Gemini AI:", aiResponsePlaces);
+        
+        // Extract the list of places
+        const placesMatch = aiResponsePlaces.match(/\d+\.\s*(.*)/g);
+        if (placesMatch) {
+            const places = placesMatch.map(match => {
+                const [fullMatch, name, description] = match.match(/(\d+\.\s*.*?):\s*(.*)/);
+                return { name: name.replace(/^\d+\.\s*/, '').trim(), description: description.trim() };
+            });
+
+
+            // Create the table for places
+            const table = document.createElement('table');
+            table.style.borderCollapse = 'collapse';
+            table.style.width = '100%';
+
+            const tableContent = places.map((place, index) => `
+                <tr>
+                    <td style="border: none; padding: 5px;">
+                        <span class="place-name">${index + 1}. ${place.name}</span><br>
+                        <small class="place-description">${place.description}</small>
+                    </td>
+                    <td style="border: none; padding: 5px; text-align: right; vertical-align: top;">
+                        <button onclick="takeMeThere('${place.name}')" style="padding: 2px 5px; font-size: 12px;">Take me there</button>
+                    </td>
+                </tr>
+            `).join('');
+
+            table.innerHTML = `
+                <tr>
+                    <td colspan="2" style="border: none; padding: 5px;"><strong>Nearby Places to Visit:</strong></td>
+                </tr>
+                ${tableContent}
             `;
 
-            placeBox.innerHTML = placeDetails;
-            container.appendChild(placeBox);
-
-            // Call Gemini AI for a recommendation
-            const prompt = `Based on the following information about a place, provide a brief, creative and fun recommendation or interesting fact, Keep it concise, around 
-            100 words. Return your answer in HTML format with appropriate tags (do not use H1, or other title tags, only use bold),
-            but do not include the \`\`\`html and \`\`\` tags:
-            Name: ${addr.address}
-            Country: ${addr.country}
-            City: ${addr.city}
-            Repeat Count: ${addr.repeatCount}
-            Years Visited: ${Array.from(addr.years).sort((a, b) => b - a).join(', ')}
-            Coordinates: ${addr.latitude}, ${addr.longitude}
-            Last Arrival Time: ${arrivalTime}`;
-
-            try {
-                const result = await model.generateContent(prompt);
-                const aiResponse = result.response.text();
-                 console.log("Error calling Gemini AI:", aiResponse);
-
-                const aiRecommendation = document.createElement("div");
-                aiRecommendation.innerHTML = `<p style="color: #0066cc;"><b>GeoStories Recommendation (Power by Gemini AI 😉):</b></p>${aiResponse}`;
-                placeBox.appendChild(aiRecommendation);
-            } catch (error) {
-                console.error("Error calling Gemini AI:", error);
-                const errorMessage = document.createElement("p");
-                errorMessage.textContent = "Unable to generate AI recommendation at this time.";
-                placeBox.appendChild(errorMessage);
-            }
-
-            document.getElementById("placeDetailsPopup").style.display = "block";
+            placeBox.appendChild(table);
+        } else {
+            const noPlacesMessage = document.createElement('p');
+            noPlacesMessage.textContent = "No nearby places found.";
+            placeBox.appendChild(noPlacesMessage);
         }
+    } catch (error) {
+        console.error("Error calling Gemini AI:", error);
+        const errorMessage = document.createElement("p");
+        errorMessage.textContent = "Unable to generate nearby places at this time.";
+        placeBox.appendChild(errorMessage);
+    }
+
+    document.getElementById("placeDetailsPopup").style.display = "block";
+}
+
+
+      async function generateAndDisplayRecommendation() {
+          const visitedAddressesArray = Array.from(visitedAddresses);
+          const promptGeneral = `Considering the places the person has already visited (${visitedAddressesArray.join(', ')}), suggest some new destinations they might not have explored yet and would be worthwhile to visit. 
+          Return your answer in HTML format with appropriate tags (do not use H1, or H2 tags, only use bold), but do not include the \`\`\`html and \`\`\` tags and be organized. Do some research about the places
+          he has been to, to recommend similar ones as well`;
+
+          try {
+              // Fetch aiResponsePlaces
+              const resultPlaces = await model.generateContent(promptGeneral);
+              const aiResponsePlaces = resultPlaces.response.text();
+
+
+              // Create and display the pop-up
+              const popup = $('<div>').addClass('recommendation-popup');
+              const content = $('<div>').addClass('recommendation-content');
+              const closeBtn = $('<button>').text('Close').addClass('close-btn');
+
+              //console.error('aiResponsePlaces Places log', aiResponsePlaces);
+              //console.error('promptGeneral log', promptGeneral);
+
+              content.append('<h2>Travel Recommendations</h2>');
+              content.append(aiResponsePlaces);
+              content.append(closeBtn);
+              popup.append(content);
+
+              $('body').append(popup);
+
+              // Center the popup
+              popup.css({
+                  'position': 'fixed',
+                  'top': '50%',
+                  'left': '50%',
+                  'transform': 'translate(-50%, -50%)',
+                  'background-color': 'white',
+                  'padding': '20px',
+                  'border-radius': '10px',
+                  'box-shadow': '0 0 10px rgba(0,0,0,0.1)',
+                  'z-index': '1000',
+                  'max-width': '80%',
+                  'max-height': '80%',
+                  'overflow-y': 'auto'
+              });
+
+              // Close button functionality
+              closeBtn.on('click', function() {
+                  popup.remove();
+              });
+          } catch (error) {
+              console.error('Error generating recommendation:', error);
+          }
+      }
+
+        async function takeMeThere(placeName) {
+            try {
+                const coordinates = await findPlaceCoordinates(placeName);
+                if (coordinates) {
+                    flyToLocation(coordinates.lat, coordinates.lng);
+                } else {
+                    console.error("Unable to find coordinates for:", placeName);
+                    alert("Unable to find the location. Please try a different place name.");
+                }
+            } catch (error) {
+                console.error("Error in takeMeThere:", error);
+                alert("An error occurred while trying to locate the place.");
+            }
+        }
+
+        function findPlaceCoordinates(placeName) {
+            return new Promise((resolve, reject) => {
+                const service = new google.maps.places.PlacesService(document.createElement("div"));
+
+                const request = {
+                    query: placeName,
+                    fields: ["geometry.location"],
+                };
+
+                service.findPlaceFromQuery(request, (results, status) => {
+                    if (status === google.maps.places.PlacesServiceStatus.OK && results.length > 0) {
+                        const location = results[0].geometry.location;
+                        resolve({ lat: location.lat(), lng: location.lng() });
+                    } else {
+                        console.error("Place not found or error:", status);
+                        resolve(null);
+                    }
+                });
+            });
+        }
+
+      // Make sure to expose the takeMeThere function to the global scope
+      window.takeMeThere = takeMeThere;
 
         function closePlaceDetailsPopup() {
             document.getElementById("placeDetailsPopup").style.display = "none";
@@ -723,6 +1066,43 @@
 
         window.sortTable = sortTable;
         window.closePlaceDetailsPopup = closePlaceDetailsPopup;
+
+        let isResizing = false;
+        let startX, startWidth;
+
+        $('table th:first-child').mousedown(function(e) {
+            isResizing = true;
+            startX = e.pageX;
+            startWidth = $(this).width();
+        });
+
+        $(document).mousemove(function(e) {
+            if (!isResizing) return;
+            let width = startWidth + (e.pageX - startX);
+            $('table th:first-child, table td:first-child').css('width', width + 'px');
+        }).mouseup(function() {
+            isResizing = false;
+        });
+
+        // Show the modal when the page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('welcomeModal').style.display = 'block';
+        });
+        // Close the modal when the close button is clicked
+        document.getElementById('closeModal').onclick = function() {
+            document.getElementById('welcomeModal').style.display = 'none';
+        }
+
+        // Close the modal if the user clicks outside of it
+        window.onclick = function(event) {
+            if (event.target == document.getElementById('welcomeModal')) {
+                document.getElementById('welcomeModal').style.display = 'none';
+            }
+        }
+
+        $(document).ready(function() {
+            $('#recommendationBtn').on('click', generateAndDisplayRecommendation);
+        });
     </script>
 </body>
 </html>
